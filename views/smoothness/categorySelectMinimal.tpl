@@ -1,0 +1,1 @@
+<select id='category' name='category'><option value='-1'>%select% %category%</option>#categorySelectMinimal#<option value='[catid]'>[category]</option>#/categorySelectMinimal#</select>

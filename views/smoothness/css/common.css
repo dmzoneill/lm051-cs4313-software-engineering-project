@@ -1,0 +1,346 @@
+body
+{
+	margin: 0px;	
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+}
+
+
+TD 
+{
+	text-align:left;
+	vertical-align:top;
+}
+
+
+a
+{
+	text-decoration : none;	
+	font-family: Arial, Helvetica, sans-serif;	
+	color: #1755B3;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+	color:#3366cc;	
+}
+
+a:hover
+{
+	font-weight: 900;
+	color: #1111FF;
+}
+
+
+.currentCat
+{
+	font-size 10pt;
+	opacity: 1.0;
+	font-weight: 900;
+	text-decoration:none;
+}
+
+.notcurrentCat
+{
+	font-size 8pt;
+	opacity: 0.8;
+	font-weight : normal;
+	text-decoration:none;	
+}
+
+
+hr
+{
+	border: 0;
+	color: #9E9E9E;
+	background-color: #9E9E9E;
+	height: 1px;
+	width: 100%;
+}
+
+
+.error
+{
+	margin-bottom: 10px;
+	background-color: #ffdddd;
+}
+
+
+.textinput
+{
+	padding:2px;
+	width:200px;
+	height:12px;	
+	-moz-border-radius:5px; 
+	-webkit-border-radius:5px;		
+	border:1px solid #ccc;
+}
+
+
+select
+{
+	border:1px solid #aaaaaa;	
+	background-color:#ffffff;
+	height: 20px;
+}
+
+
+.button
+{
+	margin-top:10px;
+	padding:5px;
+	font-weight:bold; 
+	font-size:1.0em;
+	text-align:center;
+	background:#f2f2f2;
+	cursor:pointer !important;
+	color:#3366cc;
+	border:1px solid #ccc;
+	-moz-border-radius:5px; 
+	-webkit-border-radius:5px;
+}
+
+
+#upload
+{
+	margin-top:20px;
+	padding:5px;
+	font-weight:bold; 
+	font-size: 8pt;
+	text-align:center;
+	background:#f2f2f2;
+	color:#3366cc;
+	border:1px solid #ccc;
+	width:150px;
+	cursor:pointer !important;
+	-moz-border-radius:5px; 
+	-webkit-border-radius:5px;
+}
+
+
+.darkbg
+{
+	background:#ddd !important;
+}
+
+
+#status
+{
+	padding:5px;
+}	
+
+
+.resizable-textarea textarea 
+{
+	display:block;
+	margin-bottom:0pt;
+	width:95%;
+	height: 20%;
+	border:1px solid #ccc;
+	-moz-border-radius:5px; 
+	-webkit-border-radius:5px;
+}
+
+
+li 
+{
+    margin-left:20px;
+    color:#aaa;
+    padding:2px 0;
+    font-size:90%;
+}
+
+
+.uploadExtra
+{
+	border: 1px solid #999999;
+	background-color:#eeeeee;
+	padding:10px;
+	
+}
+
+
+#results 
+{
+	background: #ffffff ;
+	border: 1px solid #777777;
+	padding:10px;
+	display: none ;
+	font-family: verdana ;
+	font-size: 10px ;
+	position: absolute ;
+	text-align:left;
+	-moz-border-radius:5px; 
+	-webkit-border-radius:5px;
+}
+
+
+#results a 
+{
+	display: block ;
+	overflow: hidden ;
+	padding: 1px 1px 1px 1px ;
+	zoom: 1 ;
+	text-align:left;
+}
+
+
+#results a:hover 
+{
+	background-color: #eeeeee;
+}
+
+
+#results img 
+{
+	background-color: #D5D5D5;
+	border: 1px solid #CCCCCC;
+	float: left ;
+	height: 45px ;
+	margin-right: 8px ;
+	width: 68px ;
+}
+
+
+#results strong 
+{
+	display: block ;
+	margin-bottom: 3px ;
+}
+
+
+.auctionItemRow
+{
+	background-color: #ffffff;
+	opacity: 0.0;	
+}
+
+
+
+.higherbid
+{
+	color:#bb0000;
+	font-size:8pt;	
+}
+
+.mybid
+{
+	color:#00bb00;
+	font-size:8pt;	
+}
+
+
+.auctionBox
+{
+	width:250px;
+	margin: 0px 0px 0px 0px;
+	padding:6px 8px 6px 8px;
+	border:1px solid #cccccc;
+	color:#000000;
+	font-size:8pt;
+	-moz-border-radius:5px; 
+	-webkit-border-radius:5px;
+	cursor: pointer;
+}
+
+.auctionBox:hover
+{
+	border:1px solid #cccccc;
+	color:#000000;
+	background-color:#eeeeff;
+}
+
+.pageBox
+{
+	white-space: nowrap;
+	margin: 0px 0px 0px 0px;
+	padding:6px 8px 6px 8px;
+	border:1px solid #cccccc;
+	color:#000000;
+	font-size:8pt;
+	-moz-border-radius:5px; 
+	-webkit-border-radius:5px;
+	cursor: pointer;
+}
+
+
+.menuBlock
+{
+	white-space: nowrap;
+	margin: 0px 0px 0px 0px;
+	padding:6px 8px 6px 8px;
+	border:1px solid #cccccc;
+	background-color:#ffffff;
+	color:#000000;
+	font-size:8pt;
+	-moz-border-radius:5px; 
+	-webkit-border-radius:5px;
+	cursor: pointer;
+}		
+
+
+.pictureBox
+{
+	white-space: nowrap;
+	margin: 0px 0px 0px 0px;
+	padding: 3px 5px 3px 5px;
+	border:1px solid #cccccc;
+	color:#000000;
+	background-color:#ffffff;
+	-moz-border-radius:5px; 
+	-webkit-border-radius:5px;
+	cursor: pointer;
+}
+
+
+
+table.tablesorter 
+{
+	font-size: 12px;
+	background-color: #ffffff;
+	width: 1024px;
+	border: 0px solid #000;
+}
+
+table.tablesorter th 
+{
+	text-align: left;
+	padding: 5px;
+	background-color: #ffffff;
+}
+
+table.tablesorter td 
+{
+	color: #000000;
+	padding: 5px;
+}
+
+table.tablesorter .even 
+{
+	background-color: #aaaaaa;
+}
+
+table.tablesorter .odd 
+{
+	background-color: #ffffff;
+}
+
+table.tablesorter .header 
+{
+	background-image: url(images/bg.png);
+	background-repeat: no-repeat;
+	padding-left: 30px;
+	padding-top: 8px;
+	height: auto;
+}
+
+table.tablesorter .headerSortUp 
+{
+	background-image: url(images/asc.png);
+	background-repeat: no-repeat;
+}
+table.tablesorter .headerSortDown 
+{
+	background-image: url(images/desc.png);
+	background-repeat: no-repeat;
+}

@@ -1,0 +1,88 @@
+<?php
+require_once ( "../../conf.php" );
+require_once ( "../locale/en.php" );
+
+$db = DatabaseManager::getInstance( array ( __DB_HOST , __DB_USER , __DB_PASS , __DB_NAME ) );
+$registry = Registry::getInstance();
+
+    
+    $langs = $db->query( "select * from locale where code!='en' order by code ASC" , "array" );    
+    $gt = new Gtranslate( );
+    $gt->setRequestType( 'curl' );
+    
+    if(count($langs) ==0)
+    {
+        print "finished";
+        ob_flush();
+        flush();
+        exit;
+    }
+    
+    foreach ( $langs as $lang )
+    {
+        $ecp = false;
+        
+        $file = __SITE_ROOT . "/system/locale/" . $lang [ 3 ] . ".php";
+        if(file_exists($file))
+        {
+            $db->query( "update locale set available='1' where code='$lang[3]'" , "one" );           
+            continue;           
+        }
+        
+        try
+        {
+            $data = call_user_func_array( array ( $gt , 'en_to_' . $lang [ 3 ] ) , array ( "hello world" ) );
+            $db->query( "update locale set available='1' where code='$lang[3]'" , "one" );
+            $ecp = false;
+        }
+        catch ( GTranslateException $ge )
+        {
+            $db->query( "update locale set available='0' where code='$lang[3]'" , "one" );
+            print $ge->getMessage();
+            ob_flush();
+            flush(); 
+            $ecp = true;
+        }
+        
+        if ( $ecp )
+        {    
+            print " en_" . $lang [ 3 ] . " \n";
+            ob_flush();
+            flush();        
+            continue;
+        }
+        
+        $file = __SITE_ROOT . "/system/locale/" . $lang [ 3 ] . ".php";
+        $fh = fopen( $file , "w" );
+        
+        if ( $fh )
+        {
+            fwrite( $fh , "<?php \n\n \$" . "locale = array(\n" );
+            
+            echo $lang [3] ."\n";
+            
+            foreach ( $locale as $key => $word )
+            {
+                try
+                {
+                    $data = trim( call_user_func_array( array ( $gt , 'en_to_' . $lang [ 3 ] ) , array ( $word ) ) );
+                    fwrite( $fh , "    \"$key\" => \"$data\",\n" );
+                }
+                catch ( GTranslateException $ge )
+                {
+                    //echo "error <br />";
+                    echo $ge->getMessage();
+	            ob_flush();
+                    flush();
+                    exit;
+                }
+            }
+            
+            fwrite( $fh , "    \"DATE_GENERATED\" => \"" . date( "d M Y H:i:s" , time() ) . "\"\n); \n\n" );
+            fclose( $fh );
+        }
+        sleep(400);
+    }
+
+?>
+

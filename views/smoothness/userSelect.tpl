@@ -1,0 +1,1 @@
+<select name='seller' id='seller'><option value='0'>%select%</option>#selectSeller#<option value='[id]' [selected]>[seller]</option>#/selectSeller#</select>
