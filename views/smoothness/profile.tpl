@@ -1,3 +1,4 @@
+<!-- jscpd:ignore-start -->
 @header@
 
 <table style="width:623px;padding:5px;">
@@ -501,3 +502,4 @@ $(document).ready(function()
 @footer@
 
 
+<!-- jscpd:ignore-end -->

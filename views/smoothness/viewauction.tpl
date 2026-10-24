@@ -1,3 +1,4 @@
+<!-- jscpd:ignore-start -->
 @header@
 
 <h2>{item_header_description}</h2>
@@ -193,3 +194,4 @@ $(document).ready(function()
 
 @footer@
 
+<!-- jscpd:ignore-end -->

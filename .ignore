@@ -14,3 +14,10 @@ views/cupertino/base/
 # (Google Translate via GTranslate) from the hand-written English pack system/locale/en.php.
 system/locale/*
 !system/locale/en.php
+
+# Vendored third-party: jQuery timepickr plugin (Maxime Haineault).
+jscript/jquery.timepickr.js
+# Vendored third-party jQuery plugins/UI (fancybox, jQuery UI 1.8rc3, stylish-select).
+jscript/fancybox/
+jscript/jquery-ui-*.js
+jscript/jquery.stylish-select.js

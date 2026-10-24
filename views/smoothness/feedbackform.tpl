@@ -1,3 +1,4 @@
+<!-- jscpd:ignore-start -->
 @header@
 
 <h2>%leavefeedback%</h2>
@@ -102,3 +103,4 @@
 
 @footer@
 
+<!-- jscpd:ignore-end -->

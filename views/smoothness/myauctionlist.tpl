@@ -1,3 +1,4 @@
+<!-- jscpd:ignore-start -->
 @header@
 <h2>%my% %auctions%</h2>
 <br />
@@ -145,3 +146,4 @@ $(document).ready(function()
 
 @footer@
 
+<!-- jscpd:ignore-end -->

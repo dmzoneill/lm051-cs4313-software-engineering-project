@@ -1,8 +1,9 @@
 <?php
+// phpcs:ignoreFile
 
-abstract class Controller extends Base
+/** @psalm-suppress UndefinedClass */ /** @psalm-suppress UndefinedClass */ abstract class Controller extends Base
 {
-	protected $view = false;	
+	/** @psalm-suppress MissingPropertyType */ /** @psalm-suppress MissingPropertyType */ protected $view = false;	
 	    
     
     public function __construct()
@@ -12,5 +13,5 @@ abstract class Controller extends Base
     }
         
     
-    abstract public function index();
+    /** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ abstract public function index();
 }

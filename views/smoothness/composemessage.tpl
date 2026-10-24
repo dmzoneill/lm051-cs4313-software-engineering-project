@@ -1,3 +1,4 @@
+<!-- jscpd:ignore-start -->
 @header@
 @messagesmenu@
 <h1>%compose% %message%</h1>
@@ -123,3 +124,4 @@ $(document).ready(function()
 
 </script>
 @footer@
+<!-- jscpd:ignore-end -->

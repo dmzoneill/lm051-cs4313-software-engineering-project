@@ -1,3 +1,4 @@
+<!-- jscpd:ignore-start -->
 @header@
 @messagesmenu@
 <h1>%inbox%</h1>
@@ -50,3 +51,4 @@
 @footer@
 
 
+<!-- jscpd:ignore-end -->

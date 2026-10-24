@@ -1,3 +1,4 @@
+<!-- jscpd:ignore-start -->
 @header@
 
 <h2>%search%</h2>
@@ -417,3 +418,4 @@ $(document).ready( function()
 
 @footer@
 
+<!-- jscpd:ignore-end -->

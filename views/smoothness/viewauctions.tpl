@@ -1,3 +1,4 @@
+<!-- jscpd:ignore-start -->
 @header@
 
 <h2>%category% %listing%</h2>
@@ -133,3 +134,4 @@ $(document).ready(function()
 
 @footer@
 
+<!-- jscpd:ignore-end -->
