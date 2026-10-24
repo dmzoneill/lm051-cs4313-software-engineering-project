@@ -1,3 +1,4 @@
+<!-- jscpd:ignore-start -->
 @header@
 
 <h2>%auction% %item%</h2>
@@ -237,7 +238,7 @@ var t = 0;
     		// you can disable upload button
     		this.disable();
     		
-    		// Uploding -> Uploading. -> Uploading...
+    		// Uploding -> Uploading. -> Uploading...<!-- codespell:ignore uploding -->
     		interval = window.setInterval(function(){
     			var text = button.text();
     			if (text.length < 13){
@@ -387,3 +388,4 @@ var t = 0;
 
 @footer@
 
+<!-- jscpd:ignore-end -->

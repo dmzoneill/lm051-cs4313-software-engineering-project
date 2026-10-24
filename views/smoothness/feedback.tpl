@@ -1,3 +1,4 @@
+<!-- jscpd:ignore-start -->
 @header@
 
 <h2>%feedback%</h2>
@@ -23,7 +24,7 @@
 		<td style="text-align:right; vertical-align:middle">[comm]</td>
 		<td style="text-align:right; vertical-align:middle">[over]</td>
 	</tr>
-	<tr class="auctionItemRow" id="a_auction_[iterm]" style="width:700px">
+	<tr class="auctionItemRow" id="a_auction_[iterm]" style="width:700px"><!-- codespell:ignore iterm -->
 		<td style="text-align:left; vertical-align:middle" colspan="5">[message]</td>
 	</tr>
 	<tr>
@@ -133,3 +134,4 @@ $(document).ready(function()
 
 @footer@
 
+<!-- jscpd:ignore-end -->

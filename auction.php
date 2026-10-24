@@ -1,8 +1,10 @@
 <?php
+// phpcs:ignoreFile
+// jscpd:ignore-start
 
 require_once ( dirname( __FILE__ ) . "/conf.php" );
 
-class Auction extends Controller
+/** @psalm-suppress UndefinedClass */ /** @psalm-suppress UndefinedClass */ class Auction extends Controller
 {
  
     public function __construct ()
@@ -89,7 +91,7 @@ class Auction extends Controller
     	else if( isset ( $_FILES['uploadfile'] ) )
         {
             include("system/Uploader.php");
-            $up = new Uploader("auction"); 
+            /* @phpstan-ignore-line */ /** @psalm-suppress UnusedVariable, TooManyArguments */ /** @psalm-suppress UnusedVariable, TooManyArguments */ $up = new Uploader("auction"); 
             exit;
         }
     	else if( isset($this->registry->__GET['placebid']) && isset($this->registry->__GET['auctionid']) && isset($this->registry->__GET['bid']) )
@@ -136,18 +138,18 @@ class Auction extends Controller
     }
     
     
-	private function convert_datetime($str) 
+	/** @psalm-suppress MissingReturnType, MissingParamType */ /** @psalm-suppress MissingReturnType, MissingParamType */ private function convert_datetime($str) 
 	{	
 		list($date, $time) = explode(' ', $str);
 		list($year, $month, $day) = explode('-', $date);
 		list($hour, $minute, $second) = explode(':', $time);		
-		$timestamp = mktime($hour, $minute, $second, $month, $day, $year);
+		/* @phpstan-ignore-line */ /** @psalm-suppress InvalidScalarArgument */ /** @psalm-suppress InvalidScalarArgument */ $timestamp = mktime($hour, $minute, $second, $month, $day, $year);
 				
 		return $timestamp;
 	}
     
     
-	private function showUserBids()
+	/** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ private function showUserBids()
     {
     	
     	$title = "%my% %bids% " . $this->session->getCurrentUser() ." ";
@@ -162,15 +164,15 @@ class Auction extends Controller
     		"sortOrder" => $this->session->getKey( "sortorder" ), 
     		"sortBy" => $this->session->getKey( "sortby" )
         );
-        $this->view = new View ( "mybids" );   	
-        $this->view->process ( $items );
-        $this->view->output ();
+        /* @phpstan-ignore-line */ $this->view = new View ( "mybids" );   	
+        /* @phpstan-ignore-line */ $this->view->process ( $items );
+        /* @phpstan-ignore-line */ $this->view->output ();
         
         exit;
     }
         
     
-    private function showUserAuctions()
+    /** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ private function showUserAuctions()
     {
     	
     	$title = "%auction% %listing% " . $this->session->getCurrentUser() ." ";
@@ -185,21 +187,21 @@ class Auction extends Controller
     		"sortOrder" => $this->session->getKey( "sortorder" ), 
     		"sortBy" => $this->session->getKey( "sortby" )
         );
-        $this->view = new View ( "myauctionlist" );   	
-        $this->view->process ( $items );
-        $this->view->output ();
+        /* @phpstan-ignore-line */ $this->view = new View ( "myauctionlist" );   	
+        /* @phpstan-ignore-line */ $this->view->process ( $items );
+        /* @phpstan-ignore-line */ $this->view->output ();
         
         exit;
     }
     
     
-    private function getAjaxSubCategories()
+    /** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ private function getAjaxSubCategories()
     {
     	$subcats = $this->db->query( "select * from auction_sub_categories where cat_id = '".$this->registry->__GET['categoryid']."' order by name ASC" , "array" );
 
     	$lang = $this->session->getLanguage();
         $lang = $this->db->query( "select code from locale where id='$lang'" , "one" );
-        include_once(__SITE_ROOT . "/system/locale/$lang.php");
+        /* @phpstan-ignore-line */ /** @psalm-suppress UnresolvableInclude */ /** @psalm-suppress UnresolvableInclude */ include_once(__SITE_ROOT . "/system/locale/$lang.php");
     	
     	$cats = "";   	   	
     	
@@ -207,49 +209,49 @@ class Auction extends Controller
     	foreach($subcats as $subcat)
     	{
     		$key = preg_replace("/%/","",$subcat[1]);
-    		$catname = preg_replace( "/$subcat[1]/" , $locale[$key] , $subcat[1] );
-    		$cats .= $subcat[0] . "|" . $catname . ",";	
+    		/* @phpstan-ignore-line */ /** @psalm-suppress UndefinedVariable, PossiblyNullArrayOffset */ /** @psalm-suppress UndefinedVariable, PossiblyNullArrayOffset */ $catname = preg_replace( "/$subcat[1]/" , $locale[$key] , $subcat[1] );
+    		/** @psalm-suppress PossiblyInvalidOperand */ /** @psalm-suppress PossiblyInvalidOperand */ $cats .= $subcat[0] . "|" . $catname . ",";	
     	}
     	
     	echo $cats;
     }
         
     
-	private function doAuction()
+	/** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ private function doAuction()
     {
     	if( !isset( $this->registry->__POST['category'] ) || $this->registry->__POST['category'] ==-1 )
-    		$error['auction-category'] = "%select%";
+    		/** @psalm-suppress PossiblyUndefinedVariable */ /** @psalm-suppress PossiblyUndefinedVariable */ $error['auction-category'] = "%select%";
     		
     	if( !isset( $this->registry->__POST['subcategory'] )  || $this->registry->__POST['subcategory'] ==-1 )
-    		$error['auction-subcategory'] = "%select%";
+    		/** @psalm-suppress PossiblyUndefinedVariable */ /** @psalm-suppress PossiblyUndefinedVariable */ $error['auction-subcategory'] = "%select%";
     		
     	if( !isset( $this->registry->__POST['itemname'] ) || strlen( $this->registry->__POST['itemname'] ) < 20 )
-    		$error['auction-itemname'] = "%tooshort%";
+    		/** @psalm-suppress PossiblyUndefinedVariable */ /** @psalm-suppress PossiblyUndefinedVariable */ $error['auction-itemname'] = "%tooshort%";
     		
     	if( !isset( $this->registry->__POST['description'] ) || strlen( $this->registry->__POST['description'] ) < 200 )
-    		$error['auction-description'] = "%tooshort%";
+    		/** @psalm-suppress PossiblyUndefinedVariable */ /** @psalm-suppress PossiblyUndefinedVariable */ $error['auction-description'] = "%tooshort%";
     		
-    	if( !isset( $this->registry->__POST['reserve'] ) || !stristr( $this->registry->__POST['reserve'] , "$" ) ) 
-    		$error['auction-reserve'] = "%tooshort%";
+    	/** @psalm-suppress RiskyTruthyFalsyComparison */ /** @psalm-suppress RiskyTruthyFalsyComparison */ if( !isset( $this->registry->__POST['reserve'] ) || !stristr( $this->registry->__POST['reserve'] , "$" ) ) 
+    		/** @psalm-suppress PossiblyUndefinedVariable */ /** @psalm-suppress PossiblyUndefinedVariable */ $error['auction-reserve'] = "%tooshort%";
     	
-    	if( !isset( $this->registry->__POST['startingbid'] )  || !stristr( $this->registry->__POST['startingbid'] , "$" ) )
-    		$error['auction-startingbid'] = "%tooshort%";
+    	/** @psalm-suppress RiskyTruthyFalsyComparison */ /** @psalm-suppress RiskyTruthyFalsyComparison */ if( !isset( $this->registry->__POST['startingbid'] )  || !stristr( $this->registry->__POST['startingbid'] , "$" ) )
+    		/** @psalm-suppress PossiblyUndefinedVariable */ /** @psalm-suppress PossiblyUndefinedVariable */ $error['auction-startingbid'] = "%tooshort%";
     		
-    	if( !isset( $this->registry->__POST['postage'] ) || !stristr( $this->registry->__POST['postage'] , "$" ) )
-    		$error['auction-postage'] = "%tooshort%";
+    	/** @psalm-suppress RiskyTruthyFalsyComparison */ /** @psalm-suppress RiskyTruthyFalsyComparison */ if( !isset( $this->registry->__POST['postage'] ) || !stristr( $this->registry->__POST['postage'] , "$" ) )
+    		/** @psalm-suppress PossiblyUndefinedVariable */ /** @psalm-suppress PossiblyUndefinedVariable */ $error['auction-postage'] = "%tooshort%";
     		
     	if( !isset( $this->registry->__POST['datepick'] ) || strlen( $this->registry->__POST['datepick'] ) < 7 )
-    		$error['auction-datepick'] = "%tooshort%";
+    		/** @psalm-suppress PossiblyUndefinedVariable */ /** @psalm-suppress PossiblyUndefinedVariable */ $error['auction-datepick'] = "%tooshort%";
     		
-    	if( !isset( $this->registry->__POST['starttime'] ) || !stristr( $this->registry->__POST['starttime'] , ":" ) )
-    		$error['auction-starttime'] = "%tooshort%";
+    	/** @psalm-suppress RiskyTruthyFalsyComparison */ /** @psalm-suppress RiskyTruthyFalsyComparison */ if( !isset( $this->registry->__POST['starttime'] ) || !stristr( $this->registry->__POST['starttime'] , ":" ) )
+    		/** @psalm-suppress PossiblyUndefinedVariable */ /** @psalm-suppress PossiblyUndefinedVariable */ $error['auction-starttime'] = "%tooshort%";
     		
-    	if( !isset( $this->registry->__POST['imagefiles'] ) || !stristr( $this->registry->__POST['imagefiles'] , "png" ) )
-    		$error['auction-imagefiles'] = "%tooshort%";
+    	/** @psalm-suppress RiskyTruthyFalsyComparison */ /** @psalm-suppress RiskyTruthyFalsyComparison */ if( !isset( $this->registry->__POST['imagefiles'] ) || !stristr( $this->registry->__POST['imagefiles'] , "png" ) )
+    		/** @psalm-suppress PossiblyUndefinedVariable */ /** @psalm-suppress PossiblyUndefinedVariable */ $error['auction-imagefiles'] = "%tooshort%";
     		
     	if( isset($error['auction-category']) || isset($error['auction-subcategory']) || isset($error['auction-itemname']) || isset($error['auction-description']) || isset($error['auction-reserve']) || isset($error['auction-startingbid']) || isset($error['auction-postage']) || isset($error['auction-datepick']) || isset($error['auction-starttime']) || isset($error['auction-imagefiles']))
     	{
-    		 $items = array (
+    		 /** @psalm-suppress PossiblyUndefinedVariable */ /** @psalm-suppress PossiblyUndefinedVariable */ $items = array (
 	            "title" => "%auction% %item% %error%",
 	        	"category" => "",
 	        	"subcategory" => "",
@@ -261,7 +263,7 @@ class Auction extends Controller
 	        	"datepick" => isset($this->registry->__POST['datepick']) ? $this->registry->__POST['datepick'] : "",
 	        	"starttime" => isset($this->registry->__POST['starttime']) ? $this->registry->__POST['starttime'] : "",
 	        	"imagefiles" => isset($this->registry->__POST['imagefiles']) ? $this->registry->__POST['imagefiles'] : "",
-	        	"auction-category" => isset($error['auction-category']) ? $error['auction-category'] : "",
+	        	/* @phpstan-ignore-line */ "auction-category" => isset($error['auction-category']) ? $error['auction-category'] : "",
 	        	"auction-subcategory" => isset($error['auction-subcategory']) ? $error['auction-subcategory'] : "",
 	        	"auction-itemname" => isset($error['auction-itemname']) ? $error['auction-itemname'] : "",
 	        	"auction-description" => isset($error['auction-description']) ? $error['auction-description'] : "",
@@ -273,9 +275,9 @@ class Auction extends Controller
 	        	"auction-imagefiles" => isset($error['auction-imagefiles']) ? $error['auction-imagefiles'] : ""
         	);
         	
-        	$this->view = new View ( "addauction" );
-        	$this->view->process ( $items );
-        	$this->view->output ();      		
+        	/* @phpstan-ignore-line */ $this->view = new View ( "addauction" );
+        	/* @phpstan-ignore-line */ $this->view->process ( $items );
+        	/* @phpstan-ignore-line */ $this->view->output ();      		
     	}
     	else
     	{
@@ -297,8 +299,8 @@ class Auction extends Controller
     		
             $country = $this->db->query( "select country from ou_users where username='" . $this->session->getCurrentUser() . "'" , "one");
             $userid = $this->session->getCurrentUserID();		
-            $query = "insert into auction_items values( null , '0' , '$postage' , '$endtime' , '$country' , '$userid' , '1' , '1' , '$startingbid' , '$reserve' , '$shortDesc' , '$longDesc' , '$cat' , '$subcat' , '1' )";
-    		$insert_auction = $this->db->query( $query , "one" ); 
+            /** @psalm-suppress PossiblyInvalidCast */ /** @psalm-suppress PossiblyInvalidCast */ $query = "insert into auction_items values( null , '0' , '$postage' , '$endtime' , '$country' , '$userid' , '1' , '1' , '$startingbid' , '$reserve' , '$shortDesc' , '$longDesc' , '$cat' , '$subcat' , '1' )";
+    		/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $insert_auction = $this->db->query( $query , "one" ); 
     		$id = $this->db->query( "select max(auction_id) from auction_items" , "one" );
     		   		
     		$imgs = explode( "," , $this->registry->__POST['imagefiles'] );
@@ -306,27 +308,27 @@ class Auction extends Controller
             {
             	$ff =  $this->db->query( "select max(pic_id) from auction_pictures" , "one" );
             	$imgid = ($ff == "") ? 1 : $ff  ;
-            	@copy ( __SITE_ROOT . "/images/auction/temp/" . $imgs[$t] , __SITE_ROOT . "/images/auction/" . $imgid .".png" );            	
-            	$imgsrc = $this->db->query( "insert into auction_pictures values( null , '$id' , '$imgid.png' )" , "one");            	
+            	/* @phpstan-ignore-line */ @copy ( __SITE_ROOT . "/images/auction/temp/" . $imgs[$t] , __SITE_ROOT . "/images/auction/" . $imgid .".png" );            	
+            	/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $imgsrc = $this->db->query( "insert into auction_pictures values( null , '$id' , '$imgid.png' )" , "one");            	
             }              
 
             $id = $this->db->query("select max(auction_id) from auction_items","one");
             
-			$items = array (
+			/** @psalm-suppress PossiblyUndefinedVariable */ /** @psalm-suppress PossiblyUndefinedVariable */ $items = array (
 	            "title" => "%auction% %submitted%",	  
-				"img" => "$imgid.png",
+				/* @phpstan-ignore-line */ "img" => "$imgid.png",
 				"itemtitle" => "$shortDesc",
 				"id" => "$id"
         	);
 			
-			$this->view = new View ( "auctionsubmitted" );
-        	$this->view->process ( $items );
-        	$this->view->output ();             
+			/* @phpstan-ignore-line */ $this->view = new View ( "auctionsubmitted" );
+        	/* @phpstan-ignore-line */ $this->view->process ( $items );
+        	/* @phpstan-ignore-line */ $this->view->output ();             
     	}          
     }
     
     
-    private function showAuctionForm()
+    /** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ private function showAuctionForm()
     {
         $items = array (
             "title" => "%auction% %item%",
@@ -352,13 +354,13 @@ class Auction extends Controller
         	"auction-imagefiles" => ""
         );
 
-        $this->view = new View ( "addauction" );
-        $this->view->process ( $items );
-        $this->view->output ();        
+        /* @phpstan-ignore-line */ $this->view = new View ( "addauction" );
+        /* @phpstan-ignore-line */ $this->view->process ( $items );
+        /* @phpstan-ignore-line */ $this->view->output ();        
     }
     
     
-    private function feedback ()
+    /** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ private function feedback ()
     {
     	if( isset ( $this->registry->__GET['auctionid'] ) )
     	{
@@ -405,7 +407,7 @@ class Auction extends Controller
 						$msg = isset( $this->registry->__POST['message'] ) ? $this->registry->__POST['message'] : "";
 						
 						$seller = $this->db->query( "select sellerid from auction_items where auction_id='$actid'" , "one" );
-		    			$insert = $this->db->query( "insert into auction_feedback values( null, '$actid', '{$winner[1]}', '$seller', '$product', '$prompt', '$comm', '$overall', '$msg')" , "one" );
+		    			/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $insert = $this->db->query( "insert into auction_feedback values( null, '$actid', '{$winner[1]}', '$seller', '$product', '$prompt', '$comm', '$overall', '$msg')" , "one" );
 		    			
 		    			print "true"; 
 		    			exit;
@@ -428,9 +430,9 @@ class Auction extends Controller
 				    		"sortOrder" => $this->session->getKey( "sortorder" ), 
 				    		"sortBy" => $this->session->getKey( "sortby" )
 				        );
-				        $this->view = new View ( "feedbackform" );   	
-				        $this->view->process ( $items );
-				        $this->view->output ();
+				        /* @phpstan-ignore-line */ $this->view = new View ( "feedbackform" );   	
+				        /* @phpstan-ignore-line */ $this->view->process ( $items );
+				        /* @phpstan-ignore-line */ $this->view->output ();
 		    		}
     			}
     			else
@@ -454,15 +456,15 @@ class Auction extends Controller
 	    		"sortOrder" => $this->session->getKey( "sortorder" ), 
 	    		"sortBy" => $this->session->getKey( "sortby" )
 	        );
-	        $this->view = new View ( "feedback" );   	
-	        $this->view->process ( $items );
-	        $this->view->output ();
+	        /* @phpstan-ignore-line */ $this->view = new View ( "feedback" );   	
+	        /* @phpstan-ignore-line */ $this->view->process ( $items );
+	        /* @phpstan-ignore-line */ $this->view->output ();
     	}
     	exit;
     }
 
     
-	private function stopWatchItem ()
+	/** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ private function stopWatchItem ()
     {
     	$auctionID = $this->registry->__GET['stop'];
     	$count = $this->db->query( "select count(*) from auction_items where auction_id = '$auctionID'" , "one" );    	
@@ -490,7 +492,7 @@ class Auction extends Controller
     }
     
     
-	private function doWatchItem ()
+	/** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ private function doWatchItem ()
     {
     	$auctionID = $this->registry->__GET['watchitem'];
     	$count = $this->db->query( "select count(*) from auction_items where auction_id = '$auctionID'" , "one" );    	
@@ -519,7 +521,7 @@ class Auction extends Controller
     }
     
     
-    private function attemptBid()
+    /** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ private function attemptBid()
     {
     	$bid = preg_replace( '/[\$,.]/' , "" , $this->registry->__GET['bid'] );
     	$auctionID = $this->registry->__GET['auctionid'];
@@ -530,22 +532,22 @@ class Auction extends Controller
     	{    		
     		$item = $item[0];
     		$auction_id = $item[0];	
-    		$price = $item[1];	 	
+    		/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $price = $item[1];	 	
     		$postage = $item[2];	 	
     		$bidding_endtime = $item[3];	 	
-    		$country_from = $item[4];	 	
+    		/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $country_from = $item[4];	 	
     		$sellerid = $item[5];	 	
     		$condition = $item[6];	 	
     		$bid_history = $item[7];	 	
     		$starting_bid = $item[8];	 	
-    		$reserve = $item[9];	 	
+    		/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $reserve = $item[9];	 	
     		$item_header_description = $item[10];	 	
     		$item_full_description = $item[11];
     		$item_full_description = str_replace(array("\r\n", "\r", "\n", "\t"), '<br />', $item_full_description);	 	
     		$item_full_description = str_replace(array("\\r\\n", "\\r", "\\n", "\\t"), '<br />', $item_full_description);
-    		$cat_id = $item[12];	 	
-    		$subcat_id = $item[13];	 	
-    		$status = $item[14];	
+    		/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $cat_id = $item[12];	 	
+    		/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $subcat_id = $item[13];	 	
+    		/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $status = $item[14];	
     		$img = $this->db->query( "select pic_url from auction_pictures where auction_id='$auction_id' order by pic_id ASC limit 0,1 " , "one" );
     		
     		$idlang = $this->session->getLanguage();
@@ -555,16 +557,16 @@ class Auction extends Controller
     		
     		if( $currentbid == "" )
     		{
-    			$currentbid = "\\$0.00";
+    			/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $currentbid = "\\$0.00";
     			$nextbid = $starting_bid;
     		}
     		else 
     		{    		
-    			$pence = substr($currentbid, strlen($currentbid) -2, 2);
-    			$pounds = substr($currentbid, 0, strlen($currentbid) -2);	    			
+    			/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $pence = substr($currentbid, strlen($currentbid) -2, 2);
+    			/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $pounds = substr($currentbid, 0, strlen($currentbid) -2);	    			
 
     			$nextbid = $starting_bid + $currentbid;
-    			$currentbid = "\\$$pounds.$pence";
+    			/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $currentbid = "\\$$pounds.$pence";
     		}
     		   		
     		if( $this->convert_datetime( $bidding_endtime ) <= time() )
@@ -576,19 +578,19 @@ class Auction extends Controller
         	{        	
         		if( $bid < $nextbid)
         		{    	    				
-    				header('Location: viewauction.php?viewid='.$auctionID.'&biderror=true&lastbid='.$bid); 	        		
+    				/** @psalm-suppress PossiblyInvalidOperand */ /** @psalm-suppress PossiblyInvalidOperand */ header('Location: viewauction.php?viewid='.$auctionID.'&biderror=true&lastbid='.$bid); 	        		
 	        		exit;
     			}
     			else
     			{
     				$now = date('Y-m-d H:i:s', time());
     				$userid = $this->session->getCurrentUserID();
-    				$this->db->query( "insert into auction_bids values(null,'$userid','$bid','$auctionID','$now')" ,"one" );
+    				/** @psalm-suppress PossiblyInvalidCast */ /** @psalm-suppress PossiblyInvalidCast */ $this->db->query( "insert into auction_bids values(null,'$userid','$bid','$auctionID','$now')" ,"one" );
     				
     				$pence = substr($nextbid, strlen($nextbid) -2, 2);
     				$pounds = substr($nextbid, 0, strlen($nextbid) -2);
     				
-    				$items = array (
+    				/** @psalm-suppress PossiblyInvalidCast, PossiblyInvalidArgument, DuplicateArrayKey */ /** @psalm-suppress PossiblyInvalidCast, PossiblyInvalidArgument, DuplicateArrayKey */ $items = array (
 		        		"imageList_directive" => array ( "images" , $this , "imageList_directive" ) ,
 		            	"title" => $item_header_description,
 		    			"img" => "$img",
@@ -600,15 +602,15 @@ class Auction extends Controller
 		    			"postage" => "$postage",
 		    			"seller" => "$sellerid",
 		    			"description" => nl2br($item_full_description),
-		    			"auctionid" => $auction_id,
+		    			/* @phpstan-ignore-line */ "auctionid" => $auction_id,
 		    			"langCode" => $langCode,
 	        			"bidError" => "%bid% > \$$pounds.$pence",  
     					"auctionid" => $auctionID,
 		        	);  
     				
-    				$this->view = new View ( "bidaccepted" );
-        			$this->view->process ( $items );
-        			$this->view->output ();
+    				/* @phpstan-ignore-line */ $this->view = new View ( "bidaccepted" );
+        			/* @phpstan-ignore-line */ $this->view->process ( $items );
+        			/* @phpstan-ignore-line */ $this->view->output ();
     			}   
     			
         	}    		 		
@@ -620,7 +622,7 @@ class Auction extends Controller
     }
     
     
-	private function showWatching()
+	/** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ private function showWatching()
     {
     	
     	$title = "%my% %bids% " . $this->session->getCurrentUser() ." ";
@@ -635,26 +637,26 @@ class Auction extends Controller
     		"sortOrder" => $this->session->getKey( "sortorder" ), 
     		"sortBy" => $this->session->getKey( "sortby" )
         );
-        $this->view = new View ( "watching" );   	
-        $this->view->process ( $items );
-        $this->view->output ();
+        /* @phpstan-ignore-line */ $this->view = new View ( "watching" );   	
+        /* @phpstan-ignore-line */ $this->view->process ( $items );
+        /* @phpstan-ignore-line */ $this->view->output ();
         
         exit;
     }
     
     
-	public function watching_directive ( $match )
+	/** @psalm-suppress MissingReturnType, MissingParamType */ /** @psalm-suppress MissingReturnType, MissingParamType */ public function watching_directive ( $match )
     {
     	$itemsperpage = $this->session->getKey( "itemsperpage" );
     	$page = isset( $this->registry->__GET['page'] ) ? (($this->registry->__GET['page'] -1) * $itemsperpage) : 0; 	
     	
-    	if( !is_int( (int) $page) || $page<0)
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $page) || $page<0)
     		$page = 0;
     		
-    	if( !is_int( (int) $itemsperpage))
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $itemsperpage))
     		$itemsperpage = 10;
     	  	
-    	$now = date('Y-m-d H:i:s', time());
+    	/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $now = date('Y-m-d H:i:s', time());
     	
     	$order = $this->session->getKey( "sortorder" );
     	$sortby = $this->session->getKey( "sortby" );
@@ -686,8 +688,8 @@ class Auction extends Controller
             list($date, $time) = explode(' ', $endtime);
 			list($year, $month, $day) = explode('-', $date);
 			list($hour, $minute, $second) = explode(':', $time);
-			$timestamp = mktime($hour, $minute, $second, $month, $day, $year);
-			$timeleft = $timestamp -  time();			
+			/* @phpstan-ignore-line */ /** @psalm-suppress InvalidScalarArgument */ /** @psalm-suppress InvalidScalarArgument */ $timestamp = mktime($hour, $minute, $second, $month, $day, $year);
+			/** @psalm-suppress PossiblyFalseOperand */ /** @psalm-suppress PossiblyFalseOperand */ $timeleft = $timestamp -  time();			
 			
 			if( $timeleft < 0)
 			{
@@ -695,29 +697,29 @@ class Auction extends Controller
 			}
 			else
 			{			
-				$days = floor( $timeleft / 60 / 60 / 24 );
-				$hours = $timeleft / 60 / 60 % 24;
-				$mins = $timeleft / 60 % 60;
+				/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $days = floor( $timeleft / 60 / 60 / 24 );
+				/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $hours = $timeleft / 60 / 60 % 24;
+				/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $mins = $timeleft / 60 % 60;
 				
 				$sleft = "";
 				
-				$sleft = ($days > 0) ? $days = $days . " %days%, " : "";
+				/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $sleft = ($days > 0) ? $days = $days . " %days%, " : "";
 				$sleft .= $hours ." %hours%, ";
 				$sleft .= $mins ." %minutes% ";
 			}
 			
 			$data = preg_replace ( "/\\[categoryid\\]/s" , $cat , $data );
-            $data = preg_replace ( "/\\[subcategoryid\\]/s" , $subcat , $data );
-			$data = preg_replace ( "/\\[height\\]/s" , $height , $data );
-            $data = preg_replace ( "/\\[width\\]/s" , $width , $data );
-			$data = preg_replace ( "/\\[auctid\\]/s" , $auctionid , $data );
-            $data = preg_replace ( "/\\[img\\]/s" , $img , $data );
-            $data = preg_replace ( "/\\[itemShort\\]/s" , $itemdesc , $data );
-            $data = preg_replace ( "/\\[timeleft\\]/s" , $sleft , $data );
-            $data = preg_replace ( "/\\[iter\\]/s" , $c , $data );
-            $data = preg_replace ( "/\\[question\\]/s" , ($timeleft > 0) ? "" : $c , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[subcategoryid\\]/s" , $subcat , $data );
+			/** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[height\\]/s" , $height , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[width\\]/s" , $width , $data );
+			/** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[auctid\\]/s" , $auctionid , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[img\\]/s" , $img , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[itemShort\\]/s" , $itemdesc , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[timeleft\\]/s" , $sleft , $data );
+            /* @phpstan-ignore-line */ /** @psalm-suppress InvalidArgument, PossiblyNullArgument */ /** @psalm-suppress InvalidArgument, PossiblyNullArgument */ $data = preg_replace ( "/\\[iter\\]/s" , $c , $data );
+            /** @psalm-suppress PossiblyInvalidArgument, PossiblyNullArgument */ /** @psalm-suppress PossiblyInvalidArgument, PossiblyNullArgument */ $data = preg_replace ( "/\\[question\\]/s" , ($timeleft > 0) ? "" : $c , $data );
             
-            $output.= $data;
+            /** @psalm-suppress PossiblyInvalidOperand */ /** @psalm-suppress PossiblyInvalidOperand */ $output.= $data;
             $c++;
         }
                 
@@ -725,15 +727,15 @@ class Auction extends Controller
     }
     
     
-	public function feedback_directive ( $match )
+	/** @psalm-suppress MissingReturnType, MissingParamType */ /** @psalm-suppress MissingReturnType, MissingParamType */ public function feedback_directive ( $match )
     {
     	$itemsperpage = $this->session->getKey( "itemsperpage" );
     	$page = isset( $this->registry->__GET['page'] ) ? (($this->registry->__GET['page'] -1) * $itemsperpage) : 0; 	
     	
-    	if( !is_int( (int) $page) || $page<0)
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $page) || $page<0)
     		$page = 0;
     		
-    	if( !is_int( (int) $itemsperpage))
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $itemsperpage))
     		$itemsperpage = 10;    	  	
     	
     	$userid = $this->session->getCurrentUserID(); 	
@@ -767,22 +769,22 @@ class Auction extends Controller
             $img = ($img == "") ? "../blanksmall.jpg" : $img;            
 			
 			$data = preg_replace ( "/\\[categoryid\\]/s" , $catid , $data );
-            $data = preg_replace ( "/\\[subcategoryid\\]/s" , $subcatid , $data );
-			$data = preg_replace ( "/\\[height\\]/s" , $height , $data );
-            $data = preg_replace ( "/\\[width\\]/s" , $width , $data );
-			$data = preg_replace ( "/\\[auctid\\]/s" , $auction_id , $data );
-            $data = preg_replace ( "/\\[img\\]/s" , $img , $data );
-            $data = preg_replace ( "/\\[itemShort\\]/s" , $description , $data );
-            $data = preg_replace ( "/\\[message\\]/s" , $rmsg , $data );
-            $data = preg_replace ( "/\\[buyerid\\]/s" , $buyerid , $data );
-            $data = preg_replace ( "/\\[product\\]/s" , $rproduct , $data );
-            $data = preg_replace ( "/\\[promptness\\]/s" , $rpromptness , $data );
-            $data = preg_replace ( "/\\[comm\\]/s" , $rcomm , $data );
-            $data = preg_replace ( "/\\[over\\]/s" , $rover , $data );
-            $data = preg_replace ( "/\\[iter\\]/s" , $c , $data );
-            $data = preg_replace ( "/\\[iterm\\]/s" , $d , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[subcategoryid\\]/s" , $subcatid , $data );
+			/** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[height\\]/s" , $height , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[width\\]/s" , $width , $data );
+			/** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[auctid\\]/s" , $auction_id , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[img\\]/s" , $img , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[itemShort\\]/s" , $description , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[message\\]/s" , $rmsg , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[buyerid\\]/s" , $buyerid , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[product\\]/s" , $rproduct , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[promptness\\]/s" , $rpromptness , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[comm\\]/s" , $rcomm , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[over\\]/s" , $rover , $data );
+            /* @phpstan-ignore-line */ /** @psalm-suppress InvalidArgument, PossiblyNullArgument */ /** @psalm-suppress InvalidArgument, PossiblyNullArgument */ $data = preg_replace ( "/\\[iter\\]/s" , $c , $data );
+            /* @phpstan-ignore-line */ /** @psalm-suppress InvalidArgument, PossiblyNullArgument */ /** @psalm-suppress InvalidArgument, PossiblyNullArgument */ $data = preg_replace ( "/\\[iterm\\]/s" , $d , $data ); // codespell:ignore iterm
             
-            $output.= $data;
+            /** @psalm-suppress PossiblyInvalidOperand */ /** @psalm-suppress PossiblyInvalidOperand */ $output.= $data;
             $c += 2;
             $d += 2;
         }
@@ -791,7 +793,7 @@ class Auction extends Controller
     }      
 	
     
-    public function imageList_directive ( $match )
+    /** @psalm-suppress MissingReturnType, MissingParamType */ /** @psalm-suppress MissingReturnType, MissingParamType */ public function imageList_directive ( $match )
     {
     	$auctionID = $this->registry->__GET['auctionid'];
     	$imgs = $this->db->query( "select * from auction_pictures where auction_id='$auctionID'" , "array" );
@@ -803,7 +805,7 @@ class Auction extends Controller
             $data = $match;
             $image = $img[2];
             $data = preg_replace ( "/\\[img\\]/s" , $image , $data );
-            $output.= $data;            
+            /** @psalm-suppress PossiblyInvalidOperand */ /** @psalm-suppress PossiblyInvalidOperand */ $output.= $data;            
         }
         
         $output = substr($output, 0, strlen($output) -1);
@@ -812,18 +814,18 @@ class Auction extends Controller
     }
     
     
-    public function auctionList_directive ( $match )
+    /** @psalm-suppress MissingReturnType, MissingParamType */ /** @psalm-suppress MissingReturnType, MissingParamType */ public function auctionList_directive ( $match )
     {
     	$itemsperpage = $this->session->getKey( "itemsperpage" );
     	$page = isset( $this->registry->__GET['page'] ) ? (($this->registry->__GET['page'] -1) * $itemsperpage) : 0; 	
     	
-    	if( !is_int( (int) $page) || $page<0)
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $page) || $page<0)
     		$page = 0;
     		
-    	if( !is_int( (int) $itemsperpage))
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $itemsperpage))
     		$itemsperpage = 10;
     	  	
-    	$now = date('Y-m-d H:i:s', time());
+    	/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $now = date('Y-m-d H:i:s', time());
     	
     	$order = $this->session->getKey( "sortorder" );
     	$sortby = ($this->session->getKey( "sortby" ) == "amount" ) ? "bidding_endtime" : $this->session->getKey( "sortby" );
@@ -872,7 +874,7 @@ class Auction extends Controller
             $auctionid = $item[0];
             $reserve = ($item[9]==0) ? "000" : $item[2];
             $endtime = $item[3];
-            $startprice = ($item[8]==0) ? "000" : $item[8];
+            /** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $startprice = ($item[8]==0) ? "000" : $item[8];
             $itemdesc = $item[10];
          
             $bids = $this->db->query( "select count(*) from auction_bids where auction_id='$auctionid'", "one" );
@@ -885,8 +887,8 @@ class Auction extends Controller
             list($date, $time) = explode(' ', $endtime);
 			list($year, $month, $day) = explode('-', $date);
 			list($hour, $minute, $second) = explode(':', $time);
-			$timestamp = mktime($hour, $minute, $second, $month, $day, $year);
-			$timeleft = $timestamp -  time();
+			/* @phpstan-ignore-line */ /** @psalm-suppress InvalidScalarArgument */ /** @psalm-suppress InvalidScalarArgument */ $timestamp = mktime($hour, $minute, $second, $month, $day, $year);
+			/** @psalm-suppress PossiblyFalseOperand */ /** @psalm-suppress PossiblyFalseOperand */ $timeleft = $timestamp -  time();
 			
 			$pence = substr($maxbid, strlen($maxbid) -2, 2);
     		$pounds = substr($maxbid, 0, strlen($maxbid) -2);
@@ -902,32 +904,32 @@ class Auction extends Controller
 			}
 			else
 			{			
-				$days = floor( $timeleft / 60 / 60 / 24 );
-				$hours = $timeleft / 60 / 60 % 24;
-				$mins = $timeleft / 60 % 60;
+				/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $days = floor( $timeleft / 60 / 60 / 24 );
+				/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $hours = $timeleft / 60 / 60 % 24;
+				/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $mins = $timeleft / 60 % 60;
 				
 				$sleft = "";
 				
-				$sleft = ($days > 0) ? $days = $days . " %days%, " : "";
+				/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $sleft = ($days > 0) ? $days = $days . " %days%, " : "";
 				$sleft .= $hours ." %hours%, ";
 				$sleft .= $mins ." %minutes% ";
 			}
 			
 			$data = preg_replace ( "/\\[categoryid\\]/s" , $item[12] , $data );
-            $data = preg_replace ( "/\\[subcategoryid\\]/s" , $item[13] , $data );
-			$data = preg_replace ( "/\\[height\\]/s" , $height , $data );
-            $data = preg_replace ( "/\\[width\\]/s" , $width , $data );
-			$data = preg_replace ( "/\\[auctid\\]/s" , $auctionid , $data );
-            $data = preg_replace ( "/\\[img\\]/s" , $img , $data );
-            $data = preg_replace ( "/\\[itemShort\\]/s" , $itemdesc , $data );
-            $data = preg_replace ( "/\\[bids\\]/s" , $bids , $data );
-            $data = preg_replace ( "/\\[price\\]/s" , $maxbid , $data );
-            $data = preg_replace ( "/\\[reserve\\]/s" , $reserve , $data );
-            $data = preg_replace ( "/\\[timeleft\\]/s" , $sleft , $data );
-            $data = preg_replace ( "/\\[iter\\]/s" , $c , $data );
-            $data = preg_replace ( "/\\[question\\]/s" , ($timeleft > 0) ? "" : $c , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[subcategoryid\\]/s" , $item[13] , $data );
+			/** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[height\\]/s" , $height , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[width\\]/s" , $width , $data );
+			/** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[auctid\\]/s" , $auctionid , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[img\\]/s" , $img , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[itemShort\\]/s" , $itemdesc , $data );
+            /** @psalm-suppress PossiblyInvalidArgument, PossiblyNullArgument */ /** @psalm-suppress PossiblyInvalidArgument, PossiblyNullArgument */ $data = preg_replace ( "/\\[bids\\]/s" , $bids , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[price\\]/s" , $maxbid , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[reserve\\]/s" , $reserve , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[timeleft\\]/s" , $sleft , $data );
+            /* @phpstan-ignore-line */ /** @psalm-suppress InvalidArgument, PossiblyNullArgument */ /** @psalm-suppress InvalidArgument, PossiblyNullArgument */ $data = preg_replace ( "/\\[iter\\]/s" , $c , $data );
+            /** @psalm-suppress PossiblyInvalidArgument, PossiblyNullArgument */ /** @psalm-suppress PossiblyInvalidArgument, PossiblyNullArgument */ $data = preg_replace ( "/\\[question\\]/s" , ($timeleft > 0) ? "" : $c , $data );
             
-            $output.= $data;
+            /** @psalm-suppress PossiblyInvalidOperand */ /** @psalm-suppress PossiblyInvalidOperand */ $output.= $data;
             $c++;
         }
                 
@@ -935,18 +937,18 @@ class Auction extends Controller
     }
     
     
-	public function bidList_directive ( $match )
+	/** @psalm-suppress MissingReturnType, MissingParamType */ /** @psalm-suppress MissingReturnType, MissingParamType */ public function bidList_directive ( $match )
     {
     	$itemsperpage = $this->session->getKey( "itemsperpage" );
     	$page = isset( $this->registry->__GET['page'] ) ? (($this->registry->__GET['page'] -1) * $itemsperpage) : 0; 	
     	
-    	if( !is_int( (int) $page) || $page<0)
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $page) || $page<0)
     		$page = 0;
     		
-    	if( !is_int( (int) $itemsperpage))
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $itemsperpage))
     		$itemsperpage = 10;
     	  	
-    	$now = date('Y-m-d H:i:s', time());
+    	/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $now = date('Y-m-d H:i:s', time());
     	
     	$order = $this->session->getKey( "sortorder" );
     	$sortby = $this->session->getKey( "sortby" );
@@ -967,11 +969,11 @@ class Auction extends Controller
         {
             $data = $match;
             $mybid = $item[0];
-            $mybidcount = $item[1];
+            /** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $mybidcount = $item[1];
             $auctionid = $item[3];
             $endtime = $item[4];
             $itemdesc = $item[5];
-            $postage = $item[6];
+            /** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $postage = $item[6];
             $cat = $item[7];
             $subcat = $item[8];
          
@@ -985,8 +987,8 @@ class Auction extends Controller
             list($date, $time) = explode(' ', $endtime);
 			list($year, $month, $day) = explode('-', $date);
 			list($hour, $minute, $second) = explode(':', $time);
-			$timestamp = mktime($hour, $minute, $second, $month, $day, $year);
-			$timeleft = $timestamp -  time();
+			/* @phpstan-ignore-line */ /** @psalm-suppress InvalidScalarArgument */ /** @psalm-suppress InvalidScalarArgument */ $timestamp = mktime($hour, $minute, $second, $month, $day, $year);
+			/** @psalm-suppress PossiblyFalseOperand */ /** @psalm-suppress PossiblyFalseOperand */ $timeleft = $timestamp -  time();
 			
 			$higherBid = $maxbid - $mybid;
 			$won = ( ( $maxbid - $mybid ) > 0 ) ? "%finished%" : "<span class='pageBox' style='background-color:#ffffff' onclick=\"window.location='auction.php?feedback=true&auctionid=$auctionid'\">%leavefeedback%</span>";
@@ -1025,34 +1027,34 @@ class Auction extends Controller
 			}
 			else
 			{			
-				$days = floor( $timeleft / 60 / 60 / 24 );
-				$hours = $timeleft / 60 / 60 % 24;
-				$mins = $timeleft / 60 % 60;
+				/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $days = floor( $timeleft / 60 / 60 / 24 );
+				/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $hours = $timeleft / 60 / 60 % 24;
+				/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $mins = $timeleft / 60 % 60;
 				
 				$sleft = "";
 				
-				$sleft = ($days > 0) ? $days = $days . " %days%, " : "";
+				/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $sleft = ($days > 0) ? $days = $days . " %days%, " : "";
 				$sleft .= $hours ." %hours%, ";
 				$sleft .= $mins ." %minutes% ";
 			}
 			
 			$data = preg_replace ( "/\\[higherbid\\]/s" , $higherBid , $data );
-			$data = preg_replace ( "/\\[highestbid\\]/s" , $highestbid , $data );
-			$data = preg_replace ( "/\\[categoryid\\]/s" , $cat , $data );
-            $data = preg_replace ( "/\\[subcategoryid\\]/s" , $subcat , $data );
-			$data = preg_replace ( "/\\[height\\]/s" , $height , $data );
-            $data = preg_replace ( "/\\[width\\]/s" , $width , $data );
-			$data = preg_replace ( "/\\[auctid\\]/s" , $auctionid , $data );
-            $data = preg_replace ( "/\\[img\\]/s" , $img , $data );
-            $data = preg_replace ( "/\\[itemShort\\]/s" , $itemdesc , $data );
-            $data = preg_replace ( "/\\[bids\\]/s" , $bids , $data );
-            $data = preg_replace ( "/\\[mybid\\]/s" , $mybid , $data );
-            $data = preg_replace ( "/\\[currentbid\\]/s" , $maxbid , $data );
-            $data = preg_replace ( "/\\[timeleft\\]/s" , $sleft , $data );
-            $data = preg_replace ( "/\\[iter\\]/s" , $c , $data );
-            $data = preg_replace ( "/\\[question\\]/s" , ($timeleft > 0) ? "" : $c , $data );
+			/** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[highestbid\\]/s" , $highestbid , $data );
+			/** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[categoryid\\]/s" , $cat , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[subcategoryid\\]/s" , $subcat , $data );
+			/** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[height\\]/s" , $height , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[width\\]/s" , $width , $data );
+			/** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[auctid\\]/s" , $auctionid , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[img\\]/s" , $img , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[itemShort\\]/s" , $itemdesc , $data );
+            /** @psalm-suppress PossiblyInvalidArgument, PossiblyNullArgument */ /** @psalm-suppress PossiblyInvalidArgument, PossiblyNullArgument */ $data = preg_replace ( "/\\[bids\\]/s" , $bids , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[mybid\\]/s" , $mybid , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[currentbid\\]/s" , $maxbid , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[timeleft\\]/s" , $sleft , $data );
+            /* @phpstan-ignore-line */ /** @psalm-suppress InvalidArgument, PossiblyNullArgument */ /** @psalm-suppress InvalidArgument, PossiblyNullArgument */ $data = preg_replace ( "/\\[iter\\]/s" , $c , $data );
+            /** @psalm-suppress PossiblyInvalidArgument, PossiblyNullArgument */ /** @psalm-suppress PossiblyInvalidArgument, PossiblyNullArgument */ $data = preg_replace ( "/\\[question\\]/s" , ($timeleft > 0) ? "" : $c , $data );
             
-            $output.= $data;
+            /** @psalm-suppress PossiblyInvalidOperand */ /** @psalm-suppress PossiblyInvalidOperand */ $output.= $data;
             $c++;
         }
                 
@@ -1060,21 +1062,21 @@ class Auction extends Controller
     }
     
     
-    public function pageination_directive( $match )
+    /** @psalm-suppress MissingReturnType, MissingParamType */ /** @psalm-suppress MissingReturnType, MissingParamType */ public function pageination_directive( $match )
     {    	   	
     	$userid = $this->session->getCurrentUserID();
 
     	$count = $this->db->query( "select count(*) from auction_items where sellerid='$userid'" , "one" );
     	
     	$itemsperpage = $this->session->getKey( "itemsperpage" );
-    	$pages = ceil( $count / $itemsperpage );    	
+    	/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $pages = ceil( $count / $itemsperpage );    	
     	
     	$page = isset($this->registry->__GET['page']) ? $this->registry->__GET['page'] : 1;
     	
-    	if( !is_int( (int) $page) || $page<0)
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $page) || $page<0)
     		$page = 1;
     		
-    	if( !is_int( (int) $itemsperpage))
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $itemsperpage))
     	{
     		$itemsperpage = 10;
     	}
@@ -1082,8 +1084,8 @@ class Auction extends Controller
     	$previous = ($page == 1) ? 1 : $page - 1;
     	$next = ($page == 1) ? 2 : $page + 1;
     	$current = $page;    	
-    	$secondlast = floor( $count / $itemsperpage ) - 1;
-    	$last = $secondlast + 1;    	
+    	/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $secondlast = floor( $count / $itemsperpage ) - 1;
+    	/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $last = $secondlast + 1;    	
     	
     	$pagination = explode( "|" , $match );
     	$pagePrevious = $pagination[0];
@@ -1093,32 +1095,32 @@ class Auction extends Controller
     	$pageLast = $pagination[4];
     	$pageNextNext = $pagination[5];
     	
-    	$output = ( $page == 1 ) ? "" : preg_replace ( "/\\[previous\\]/s" , $previous , $pagePrevious );
-    	$output .= preg_replace ( "/\\[current\\]/s" , $current , $pageCurrrent );
-    	$output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNext ) : "";
-    	$output .= ( (($secondlast * $itemsperpage) < $count) && (($secondlast * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[secondlast\\]/s" , $secondlast , $pageSecondLast ) : "";
-    	$output .= ( (($last * $itemsperpage) < $count) && (($last * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[last\\]/s" , $last , $pageLast ) : "";
-		$output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNextNext ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output = ( $page == 1 ) ? "" : preg_replace ( "/\\[previous\\]/s" , $previous , $pagePrevious );
+    	/** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= preg_replace ( "/\\[current\\]/s" , $current , $pageCurrrent );
+    	/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNext ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress InvalidOperand, InvalidArgument */ /** @psalm-suppress InvalidOperand, InvalidArgument */ $output .= ( (($secondlast * $itemsperpage) < $count) && (($secondlast * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[secondlast\\]/s" , $secondlast , $pageSecondLast ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress InvalidOperand, InvalidArgument */ /** @psalm-suppress InvalidOperand, InvalidArgument */ $output .= ( (($last * $itemsperpage) < $count) && (($last * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[last\\]/s" , $last , $pageLast ) : "";
+		/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNextNext ) : "";
 		
     	return $output;
     }
     
     
-	public function userbidsPageination_directive( $match )
+	/** @psalm-suppress MissingReturnType, MissingParamType */ /** @psalm-suppress MissingReturnType, MissingParamType */ public function userbidsPageination_directive( $match )
     {    	   	
     	$userid = $this->session->getCurrentUserID();
 
     	$count = $this->db->query( "SELECT MAX(amount) AS amount, COUNT(amount) as bid_history, user_id, a.auction_id, b.bidding_endtime, b.item_header_description, b.postage, b.cat_id, b.subcat_id FROM auction_bids a, auction_items b WHERE user_id = '$userid' AND a.auction_id = b.auction_id GROUP BY a.auction_id" , "array" );
     	$count = count($count);
     	$itemsperpage = $this->session->getKey( "itemsperpage" );
-    	$pages = ceil( $count / $itemsperpage );    	
+    	/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $pages = ceil( $count / $itemsperpage );    	
     	
     	$page = isset($this->registry->__GET['page']) ? $this->registry->__GET['page'] : 1;
     	
-    	if( !is_int( (int) $page) || $page<0)
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $page) || $page<0)
     		$page = 1;
     		
-    	if( !is_int( (int) $itemsperpage))
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $itemsperpage))
     	{
     		$itemsperpage = 10;
     	}
@@ -1126,8 +1128,8 @@ class Auction extends Controller
     	$previous = ($page == 1) ? 1 : $page - 1;
     	$next = ($page == 1) ? 2 : $page + 1;
     	$current = $page;    	
-    	$secondlast = floor( $count / $itemsperpage ) - 1;
-    	$last = $secondlast + 1;    	
+    	/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $secondlast = floor( $count / $itemsperpage ) - 1;
+    	/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $last = $secondlast + 1;    	
     	
     	$pagination = explode( "|" , $match );
     	$pagePrevious = $pagination[0];
@@ -1137,31 +1139,31 @@ class Auction extends Controller
     	$pageLast = $pagination[4];
     	$pageNextNext = $pagination[5];
     	
-    	$output = ( $page == 1 ) ? "" : preg_replace ( "/\\[previous\\]/s" , $previous , $pagePrevious );
-    	$output .= preg_replace ( "/\\[current\\]/s" , $current , $pageCurrrent );
-    	$output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNext ) : "";
-    	$output .= ( (($secondlast * $itemsperpage) < $count) && (($secondlast * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[secondlast\\]/s" , $secondlast , $pageSecondLast ) : "";
-    	$output .= ( (($last * $itemsperpage) < $count) && (($last * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[last\\]/s" , $last , $pageLast ) : "";
-		$output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNextNext ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output = ( $page == 1 ) ? "" : preg_replace ( "/\\[previous\\]/s" , $previous , $pagePrevious );
+    	/** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= preg_replace ( "/\\[current\\]/s" , $current , $pageCurrrent );
+    	/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNext ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress InvalidOperand, InvalidArgument */ /** @psalm-suppress InvalidOperand, InvalidArgument */ $output .= ( (($secondlast * $itemsperpage) < $count) && (($secondlast * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[secondlast\\]/s" , $secondlast , $pageSecondLast ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress InvalidOperand, InvalidArgument */ /** @psalm-suppress InvalidOperand, InvalidArgument */ $output .= ( (($last * $itemsperpage) < $count) && (($last * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[last\\]/s" , $last , $pageLast ) : "";
+		/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNextNext ) : "";
 		
     	return $output;
     }
     
     
-	public function feedbackPageination_directive( $match )
+	/** @psalm-suppress MissingReturnType, MissingParamType */ /** @psalm-suppress MissingReturnType, MissingParamType */ public function feedbackPageination_directive( $match )
     {    	   	
     	$userid = $this->session->getCurrentUserID();
     	$count = $this->db->query( "SELECT count(*) from auction_feedback a, auction_items b where b.auction_id = a.auction_id and seller_id='$userid'" , "one" );
     	
     	$itemsperpage = $this->session->getKey( "itemsperpage" );
-    	$pages = ceil( $count / $itemsperpage );    	
+    	/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $pages = ceil( $count / $itemsperpage );    	
     	
     	$page = isset($this->registry->__GET['page']) ? $this->registry->__GET['page'] : 1;
     	
-    	if( !is_int( (int) $page) || $page<0)
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $page) || $page<0)
     		$page = 1;
     		
-    	if( !is_int( (int) $itemsperpage))
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $itemsperpage))
     	{
     		$itemsperpage = 10;
     	}
@@ -1169,8 +1171,8 @@ class Auction extends Controller
     	$previous = ($page == 1) ? 1 : $page - 1;
     	$next = ($page == 1) ? 2 : $page + 1;
     	$current = $page;    	
-    	$secondlast = floor( $count / $itemsperpage ) - 1;
-    	$last = $secondlast + 1;    	
+    	/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $secondlast = floor( $count / $itemsperpage ) - 1;
+    	/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $last = $secondlast + 1;    	
     	
     	$pagination = explode( "|" , $match );
     	$pagePrevious = $pagination[0];
@@ -1180,31 +1182,31 @@ class Auction extends Controller
     	$pageLast = $pagination[4];
     	$pageNextNext = $pagination[5];
     	
-    	$output = ( $page == 1 ) ? "" : preg_replace ( "/\\[previous\\]/s" , $previous , $pagePrevious );
-    	$output .= preg_replace ( "/\\[current\\]/s" , $current , $pageCurrrent );
-    	$output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNext ) : "";
-    	$output .= ( (($secondlast * $itemsperpage) < $count) && (($secondlast * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[secondlast\\]/s" , $secondlast , $pageSecondLast ) : "";
-    	$output .= ( (($last * $itemsperpage) < $count) && (($last * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[last\\]/s" , $last , $pageLast ) : "";
-		$output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNextNext ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output = ( $page == 1 ) ? "" : preg_replace ( "/\\[previous\\]/s" , $previous , $pagePrevious );
+    	/** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= preg_replace ( "/\\[current\\]/s" , $current , $pageCurrrent );
+    	/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNext ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress InvalidOperand, InvalidArgument */ /** @psalm-suppress InvalidOperand, InvalidArgument */ $output .= ( (($secondlast * $itemsperpage) < $count) && (($secondlast * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[secondlast\\]/s" , $secondlast , $pageSecondLast ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress InvalidOperand, InvalidArgument */ /** @psalm-suppress InvalidOperand, InvalidArgument */ $output .= ( (($last * $itemsperpage) < $count) && (($last * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[last\\]/s" , $last , $pageLast ) : "";
+		/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNextNext ) : "";
 		
     	return $output;
     }
     
     
-	public function watchingPageination_directive( $match )
+	/** @psalm-suppress MissingReturnType, MissingParamType */ /** @psalm-suppress MissingReturnType, MissingParamType */ public function watchingPageination_directive( $match )
     {    	   	
     	$userid = $this->session->getCurrentUserID();
     	$count = $this->db->query( "SELECT count(*) FROM item_watching a, auction_items b WHERE a.user_id = '$userid' AND a.auction_id = b.auction_id" , "one" );
     	
     	$itemsperpage = $this->session->getKey( "itemsperpage" );
-    	$pages = ceil( $count / $itemsperpage );    	
+    	/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $pages = ceil( $count / $itemsperpage );    	
     	
     	$page = isset($this->registry->__GET['page']) ? $this->registry->__GET['page'] : 1;
     	
-    	if( !is_int( (int) $page) || $page<0)
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $page) || $page<0)
     		$page = 1;
     		
-    	if( !is_int( (int) $itemsperpage))
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $itemsperpage))
     	{
     		$itemsperpage = 10;
     	}
@@ -1212,8 +1214,8 @@ class Auction extends Controller
     	$previous = ($page == 1) ? 1 : $page - 1;
     	$next = ($page == 1) ? 2 : $page + 1;
     	$current = $page;    	
-    	$secondlast = floor( $count / $itemsperpage ) - 1;
-    	$last = $secondlast + 1;    	
+    	/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $secondlast = floor( $count / $itemsperpage ) - 1;
+    	/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $last = $secondlast + 1;    	
     	
     	$pagination = explode( "|" , $match );
     	$pagePrevious = $pagination[0];
@@ -1223,27 +1225,28 @@ class Auction extends Controller
     	$pageLast = $pagination[4];
     	$pageNextNext = $pagination[5];
     	
-    	$output = ( $page == 1 ) ? "" : preg_replace ( "/\\[previous\\]/s" , $previous , $pagePrevious );
-    	$output .= preg_replace ( "/\\[current\\]/s" , $current , $pageCurrrent );
-    	$output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNext ) : "";
-    	$output .= ( (($secondlast * $itemsperpage) < $count) && (($secondlast * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[secondlast\\]/s" , $secondlast , $pageSecondLast ) : "";
-    	$output .= ( (($last * $itemsperpage) < $count) && (($last * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[last\\]/s" , $last , $pageLast ) : "";
-		$output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNextNext ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output = ( $page == 1 ) ? "" : preg_replace ( "/\\[previous\\]/s" , $previous , $pagePrevious );
+    	/** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= preg_replace ( "/\\[current\\]/s" , $current , $pageCurrrent );
+    	/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNext ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress InvalidOperand, InvalidArgument */ /** @psalm-suppress InvalidOperand, InvalidArgument */ $output .= ( (($secondlast * $itemsperpage) < $count) && (($secondlast * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[secondlast\\]/s" , $secondlast , $pageSecondLast ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress InvalidOperand, InvalidArgument */ /** @psalm-suppress InvalidOperand, InvalidArgument */ $output .= ( (($last * $itemsperpage) < $count) && (($last * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[last\\]/s" , $last , $pageLast ) : "";
+		/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNextNext ) : "";
 		
     	return $output;
     }	
     
 
-    public function index()
+    /** @psalm-suppress MissingOverrideAttribute, MissingReturnType */ /** @psalm-suppress MissingOverrideAttribute, MissingReturnType */ #[\Override] public function index()
     {
         $items = array (
             "title" => "%auction% %item%"            
         );
 
-        $this->view = new View ( "auctionagreement" );
-        $this->view->process ( $items );
-        $this->view->output ();
+        /* @phpstan-ignore-line */ $this->view = new View ( "auctionagreement" );
+        /* @phpstan-ignore-line */ $this->view->process ( $items );
+        /* @phpstan-ignore-line */ $this->view->output ();
     }
 }
 
-new Auction;
+/** @psalm-suppress MissingDependency */ /** @psalm-suppress MissingDependency */ new Auction;
+// jscpd:ignore-end

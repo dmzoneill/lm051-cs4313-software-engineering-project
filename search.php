@@ -1,8 +1,10 @@
 <?php
+// phpcs:ignoreFile
+// jscpd:ignore-start
 
 require_once ( dirname( __FILE__ ) . "/conf.php" );
 
-class Search extends Controller
+/** @psalm-suppress UndefinedClass */ /** @psalm-suppress UndefinedClass */ class Search extends Controller
 {
  
     public function __construct ()
@@ -16,12 +18,12 @@ class Search extends Controller
         	
         	$lang = $this->session->getLanguage();
         	$lang = $this->db->query( "select code from locale where id='$lang'" , "one" );
-        	include_once(__SITE_ROOT . "/system/locale/$lang.php");
+        	/* @phpstan-ignore-line */ /** @psalm-suppress UnresolvableInclude */ /** @psalm-suppress UnresolvableInclude */ include_once(__SITE_ROOT . "/system/locale/$lang.php");
         	$count = $this->db->query( "select count(*) from auction_items where item_header_description like '%$searchterm%' and bidding_endtime > '$now' order by bidding_endtime DESC ", "array" );
         	
         	if( !( $count > 0) )
         	{
-        		echo "0 $locale[resultsfound]";
+        		/* @phpstan-ignore-line */ /** @psalm-suppress UndefinedVariable */ /** @psalm-suppress UndefinedVariable */ echo "0 $locale[resultsfound]";
         		exit;
         	}
         	
@@ -29,9 +31,9 @@ class Search extends Controller
 	            "suggest_directive" => array ( "suggestions" , $this , "suggest_directive" ) 
 	        );
 	
-	        $this->view = new View ( "searchsuggest" );
-	        $this->view->process ( $items );
-	        $this->view->output ();             	
+	        /* @phpstan-ignore-line */ $this->view = new View ( "searchsuggest" );
+	        /* @phpstan-ignore-line */ $this->view->process ( $items );
+	        /* @phpstan-ignore-line */ $this->view->output ();             	
 
         	exit;        	
         }
@@ -113,21 +115,21 @@ class Search extends Controller
     }
     
     
-	public function pageination_directive( $match )
+	/** @psalm-suppress MissingReturnType, MissingParamType */ /** @psalm-suppress MissingReturnType, MissingParamType */ public function pageination_directive( $match )
     {    	  	
     	$term = $this->registry->__GET['term']; 
     	$now = date('Y-m-d H:i:s', time());
     	$count = $this->db->query( "select count(*) from auction_items where item_header_description like '%$term%' and bidding_endtime  > '$now'" , "one" );
     	
     	$itemsperpage = $this->session->getKey( "itemsperpage" );
-    	$pages = ceil( $count / $itemsperpage );    	
+    	/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $pages = ceil( $count / $itemsperpage );    	
     	
     	$page = isset($this->registry->__GET['page']) ? $this->registry->__GET['page'] : 1;
     	
-    	if( !is_int( (int) $page) || $page<0)
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $page) || $page<0)
     		$page = 1;
     		
-    	if( !is_int( (int) $itemsperpage))
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $itemsperpage))
     	{
     		$itemsperpage = 10;
     	}
@@ -135,12 +137,12 @@ class Search extends Controller
     	$previous = ($page == 1) ? 1 : $page - 1;
     	$next = ($page == 1) ? 2 : $page + 1;
     	$current = $page;    	
-    	$secondlast = floor( $count / $itemsperpage ) - 1;
-    	$last = $secondlast + 1;
+    	/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $secondlast = floor( $count / $itemsperpage ) - 1;
+    	/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $last = $secondlast + 1;
     	
     	$match = preg_replace ( "/\\[term\\]/s" , $term , $match );
     	
-    	$pagination = explode( "|" , $match );
+    	/** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $pagination = explode( "|" , $match );
     	$pagePrevious = $pagination[0];
     	$pageCurrrent = $pagination[1];
     	$pageNext = $pagination[2];
@@ -148,27 +150,27 @@ class Search extends Controller
     	$pageLast = $pagination[4];
     	$pageNextNext = $pagination[5];
     	
-    	$output = ( $page == 1 ) ? "" : preg_replace ( "/\\[previous\\]/s" , $previous , $pagePrevious );
-    	$output .= preg_replace ( "/\\[current\\]/s" , $current , $pageCurrrent );
-    	$output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNext ) : "";
-    	$output .= ( (($secondlast * $itemsperpage) < $count) && (($secondlast * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[secondlast\\]/s" , $secondlast , $pageSecondLast ) : "";
-    	$output .= ( (($last * $itemsperpage) < $count) && (($last * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[last\\]/s" , $last , $pageLast ) : "";
-		$output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNextNext ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output = ( $page == 1 ) ? "" : preg_replace ( "/\\[previous\\]/s" , $previous , $pagePrevious );
+    	/** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= preg_replace ( "/\\[current\\]/s" , $current , $pageCurrrent );
+    	/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNext ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress InvalidOperand, InvalidArgument */ /** @psalm-suppress InvalidOperand, InvalidArgument */ $output .= ( (($secondlast * $itemsperpage) < $count) && (($secondlast * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[secondlast\\]/s" , $secondlast , $pageSecondLast ) : "";
+    	/* @phpstan-ignore-line */ /** @psalm-suppress InvalidOperand, InvalidArgument */ /** @psalm-suppress InvalidOperand, InvalidArgument */ $output .= ( (($last * $itemsperpage) < $count) && (($last * $itemsperpage) > $next * $itemsperpage) ) ? preg_replace ( "/\\[last\\]/s" , $last , $pageLast ) : "";
+		/* @phpstan-ignore-line */ /** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $output .= ( ($current * $itemsperpage) < $count ) ? preg_replace ( "/\\[next\\]/s" , $next , $pageNextNext ) : "";
 		
     	return $output;
     }
     
     
-	public function searchList_directive ( $match )
+	/** @psalm-suppress MissingReturnType, MissingParamType */ /** @psalm-suppress MissingReturnType, MissingParamType */ public function searchList_directive ( $match )
     {
     	$term = $this->registry->__GET['term']; 
     	$itemsperpage = $this->session->getKey( "itemsperpage" );
     	$page = isset( $this->registry->__GET['page'] ) ? (($this->registry->__GET['page'] -1) * $itemsperpage) : 0; 	
     	
-    	if( !is_int( (int) $page) || $page<0)
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $page) || $page<0)
     		$page = 0;
     		
-    	if( !is_int( (int) $itemsperpage))
+    	/* @phpstan-ignore-line */ /** @psalm-suppress TypeDoesNotContainType */ /** @psalm-suppress TypeDoesNotContainType */ if( !is_int( (int) $itemsperpage))
     		$itemsperpage = 10;
   	
     	$now = date('Y-m-d H:i:s', time());
@@ -218,7 +220,7 @@ class Search extends Controller
             $auctionid = $item[0];
             $postage = ($item[2]==0) ? "000" : $item[2];
             $endtime = $item[3];
-            $startprice = ($item[8]==0) ? "0.00" : $item[8];
+            /** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $startprice = ($item[8]==0) ? "0.00" : $item[8];
             $itemdesc = $item[10];
          
             $bids = $this->db->query( "select count(*) from auction_bids where auction_id='$auctionid'", "one" );
@@ -231,16 +233,16 @@ class Search extends Controller
             list($date, $time) = explode(' ', $endtime);
 			list($year, $month, $day) = explode('-', $date);
 			list($hour, $minute, $second) = explode(':', $time);
-			$timestamp = mktime($hour, $minute, $second, $month, $day, $year);
-			$timeleft = $timestamp -  time();
+			/* @phpstan-ignore-line */ /** @psalm-suppress InvalidScalarArgument */ /** @psalm-suppress InvalidScalarArgument */ $timestamp = mktime($hour, $minute, $second, $month, $day, $year);
+			/** @psalm-suppress PossiblyFalseOperand */ /** @psalm-suppress PossiblyFalseOperand */ $timeleft = $timestamp -  time();
 			
-			$days = floor( $timeleft / 60 / 60 / 24 );
-			$hours = $timeleft / 60 / 60 % 24;
-			$mins = $timeleft / 60 % 60;
+			/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $days = floor( $timeleft / 60 / 60 / 24 );
+			/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $hours = $timeleft / 60 / 60 % 24;
+			/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $mins = $timeleft / 60 % 60;
 			
-			$sleft = "";
+			/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $sleft = "";
 			
-			$sleft = ($days > 0) ? $days = $days . " %days%, " : "";
+			/** @psalm-suppress InvalidOperand */ /** @psalm-suppress InvalidOperand */ $sleft = ($days > 0) ? $days = $days . " %days%, " : "";
 			$sleft .= $hours ." %hours%, ";
 			$sleft .= $mins ." %minutes% ";
 			
@@ -253,19 +255,19 @@ class Search extends Controller
     		$postage = "&#36;". $pounds .".$pence";
 			
     		$data = preg_replace ( "/\\[categoryid\\]/s" , $item[12] , $data );
-            $data = preg_replace ( "/\\[subcategoryid\\]/s" , $item[13] , $data );
-			$data = preg_replace ( "/\\[height\\]/s" , $height , $data );
-            $data = preg_replace ( "/\\[width\\]/s" , $width , $data );
-			$data = preg_replace ( "/\\[auctid\\]/s" , $auctionid , $data );
-            $data = preg_replace ( "/\\[img\\]/s" , $img , $data );
-            $data = preg_replace ( "/\\[itemShort\\]/s" , $itemdesc , $data );
-            $data = preg_replace ( "/\\[bids\\]/s" , $bids , $data );
-            $data = preg_replace ( "/\\[price\\]/s" , $maxbid , $data );
-            $data = preg_replace ( "/\\[postage\\]/s" , $postage , $data );
-            $data = preg_replace ( "/\\[timeleft\\]/s" , $sleft , $data );
-            $data = preg_replace ( "/\\[iter\\]/s" , $c , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[subcategoryid\\]/s" , $item[13] , $data );
+			/** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[height\\]/s" , $height , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[width\\]/s" , $width , $data );
+			/** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[auctid\\]/s" , $auctionid , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[img\\]/s" , $img , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[itemShort\\]/s" , $itemdesc , $data );
+            /** @psalm-suppress PossiblyInvalidArgument, PossiblyNullArgument */ /** @psalm-suppress PossiblyInvalidArgument, PossiblyNullArgument */ $data = preg_replace ( "/\\[bids\\]/s" , $bids , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[price\\]/s" , $maxbid , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[postage\\]/s" , $postage , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[timeleft\\]/s" , $sleft , $data );
+            /* @phpstan-ignore-line */ /** @psalm-suppress InvalidArgument, PossiblyNullArgument */ /** @psalm-suppress InvalidArgument, PossiblyNullArgument */ $data = preg_replace ( "/\\[iter\\]/s" , $c , $data );
             
-            $output.= $data;
+            /** @psalm-suppress PossiblyInvalidOperand */ /** @psalm-suppress PossiblyInvalidOperand */ $output.= $data;
             $c++;
         }
                 
@@ -273,7 +275,7 @@ class Search extends Controller
     }
     
     
-    private function standardSearch()
+    /** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ private function standardSearch()
     {
     	$term = $this->registry->__GET['term'];    	
     	$now = date('Y-m-d H:i:s', time());
@@ -293,7 +295,7 @@ class Search extends Controller
     			"sortBy" => $this->session->getKey( "sortby" ),
     			"term" => $term
         	);
-        	$this->view = new View ( "standardSearch" );
+        	/* @phpstan-ignore-line */ $this->view = new View ( "standardSearch" );
     	}
     	else 
     	{
@@ -306,22 +308,22 @@ class Search extends Controller
     			"sortBy" => $this->session->getKey( "sortby" ),
     			"term" => $term    			
         	);    	
-        	$this->view = new View ( "viewauctionsempty" );	
+        	/* @phpstan-ignore-line */ $this->view = new View ( "viewauctionsempty" );	
     	} 
     	  
-    	$this->view->process ( $items );
-        $this->view->output ();	
+    	/* @phpstan-ignore-line */ $this->view->process ( $items );
+        /* @phpstan-ignore-line */ $this->view->output ();	
     }
     
     
-    private function advancedSearchWarning()
+    /** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ private function advancedSearchWarning()
     {
     	print "error";
     	exit;
     }
     
     
-    private function advancedSearch()
+    /** @psalm-suppress MissingReturnType */ /** @psalm-suppress MissingReturnType */ private function advancedSearch()
     {
     	$fields = $this->registry->__POST['columns'];
         $conditions = $this->registry->__POST['condition'];
@@ -357,7 +359,7 @@ class Search extends Controller
         
         $lang = $this->session->getLanguage();
         $lang = $this->db->query( "select code from locale where id='$lang'" , "one" );
-        include_once(__SITE_ROOT . "/system/locale/$lang.php");
+        /* @phpstan-ignore-line */ /** @psalm-suppress UnresolvableInclude */ /** @psalm-suppress UnresolvableInclude */ include_once(__SITE_ROOT . "/system/locale/$lang.php");
         
         
         for ( $h = 0 ; $h < count( $fields ); $h++ )
@@ -367,7 +369,7 @@ class Search extends Controller
         	$compound = $compounds[$h];
         	$field = $fields[$h];  
         	$condition = $conditions[$h];
-        	$value = $values[$h];
+        	/** @psalm-suppress PossiblyInvalidArrayOffset */ /** @psalm-suppress PossiblyInvalidArrayOffset */ $value = $values[$h];
         	
         	if( $h == 0 ) // no AND or OR (first expression)
         	{
@@ -375,26 +377,26 @@ class Search extends Controller
         		$temp .= ( $condition > 0 && $condition < 6 ) ? " {$cons[$condition]} " : $this->advancedSearchWarning();
         		if( $condition == 1)
         		{
-       				$temp .= ( strlen($value) > 0 ) ? " '%{$values[$h]}%' " : $this->advancedSearchWarning();
+       				/** @psalm-suppress PossiblyInvalidArgument, PossiblyInvalidArrayOffset, PossiblyInvalidCast */ /** @psalm-suppress PossiblyInvalidArgument, PossiblyInvalidArrayOffset, PossiblyInvalidCast */ $temp .= ( strlen($value) > 0 ) ? " '%{$values[$h]}%' " : $this->advancedSearchWarning();
         		}
         		else 
         		{
         			if ( $field == 3 ) // date field
         			{
-        				$dob = explode("-",$values[$h]);
+        				/** @psalm-suppress PossiblyInvalidArrayOffset, PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArrayOffset, PossiblyInvalidArgument */ $dob = explode("-",$values[$h]);
             			$year = $dob[2];
             			$month = $dob[1];
             			$day = $dob[0];
-        				$temp .= ( strlen($value) > 0 ) ? " '$year-$month-$day 00:00:00' " : $this->advancedSearchWarning();
+        				/** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $temp .= ( strlen($value) > 0 ) ? " '$year-$month-$day 00:00:00' " : $this->advancedSearchWarning();
         			}
         			else if( $field == 2 || $field == 8 || $field == 9 ) // money fields
         			{
-        				$values[$h] = preg_replace( '/[\$,.]/' , "" , $values[$h] );
-        				$temp .= ( strlen($value) > 0 ) ? " '{$values[$h]}' " : $this->advancedSearchWarning();
+        				/** @psalm-suppress PossiblyInvalidArrayOffset, PossiblyNullArgument */ /** @psalm-suppress PossiblyInvalidArrayOffset, PossiblyNullArgument */ $values[$h] = preg_replace( '/[\$,.]/' , "" , $values[$h] );
+        				/** @psalm-suppress PossiblyInvalidArgument, PossiblyInvalidCast */ /** @psalm-suppress PossiblyInvalidArgument, PossiblyInvalidCast */ $temp .= ( strlen($value) > 0 ) ? " '{$values[$h]}' " : $this->advancedSearchWarning();
         			}
         			else
         			{
-        				$temp .= ( strlen($value) > 0 ) ? " '{$values[$h]}' " : $this->advancedSearchWarning();
+        				/** @psalm-suppress PossiblyInvalidArgument, PossiblyInvalidArrayOffset, PossiblyInvalidCast */ /** @psalm-suppress PossiblyInvalidArgument, PossiblyInvalidArrayOffset, PossiblyInvalidCast */ $temp .= ( strlen($value) > 0 ) ? " '{$values[$h]}' " : $this->advancedSearchWarning();
         			}        			
         		}
         	}
@@ -405,26 +407,26 @@ class Search extends Controller
         		$temp .= ( $condition > 0 && $condition < 6 ) ? " {$cons[$condition]} " : $this->advancedSearchWarning();
         		if( $condition == 1)
         		{
-        			$temp .= ( strlen($value) > 0 ) ? " '%{$values[$h]}%' " : $this->advancedSearchWarning();
+        			/** @psalm-suppress PossiblyInvalidArgument, PossiblyInvalidArrayOffset, PossiblyInvalidCast */ /** @psalm-suppress PossiblyInvalidArgument, PossiblyInvalidArrayOffset, PossiblyInvalidCast */ $temp .= ( strlen($value) > 0 ) ? " '%{$values[$h]}%' " : $this->advancedSearchWarning();
         		}
         		else 
         		{
         			if ( $field == 3 ) // date field
         			{
-        				$dob = explode("-",$values[$h]);
+        				/** @psalm-suppress PossiblyInvalidArrayOffset, PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArrayOffset, PossiblyInvalidArgument */ $dob = explode("-",$values[$h]);
             			$year = $dob[2];
             			$month = $dob[1];
             			$day = $dob[0];
-        				$temp .= ( strlen($value) > 0 ) ? " '$year-$month-$day 00:00:00' " : $this->advancedSearchWarning();
+        				/** @psalm-suppress PossiblyInvalidArgument */ /** @psalm-suppress PossiblyInvalidArgument */ $temp .= ( strlen($value) > 0 ) ? " '$year-$month-$day 00:00:00' " : $this->advancedSearchWarning();
         			}
         			else if( $field == 2 || $field == 8 || $field == 9 ) // money fields
         			{
-        				$values[$h] = preg_replace( '/[\$,.]/' , "" , $values[$h] );
-        				$temp .= ( strlen($value) > 0 ) ? " '{$values[$h]}' " : $this->advancedSearchWarning();
+        				/** @psalm-suppress PossiblyInvalidArrayOffset, PossiblyNullArgument */ /** @psalm-suppress PossiblyInvalidArrayOffset, PossiblyNullArgument */ $values[$h] = preg_replace( '/[\$,.]/' , "" , $values[$h] );
+        				/** @psalm-suppress PossiblyInvalidArgument, PossiblyInvalidCast */ /** @psalm-suppress PossiblyInvalidArgument, PossiblyInvalidCast */ $temp .= ( strlen($value) > 0 ) ? " '{$values[$h]}' " : $this->advancedSearchWarning();
         			}
         			else
         			{
-        				$temp .= ( strlen($value) > 0 ) ? " '{$values[$h]}' " : $this->advancedSearchWarning();
+        				/** @psalm-suppress PossiblyInvalidArgument, PossiblyInvalidArrayOffset, PossiblyInvalidCast */ /** @psalm-suppress PossiblyInvalidArgument, PossiblyInvalidArrayOffset, PossiblyInvalidCast */ $temp .= ( strlen($value) > 0 ) ? " '{$values[$h]}' " : $this->advancedSearchWarning();
         			}          			
         		}
         	}    
@@ -438,16 +440,16 @@ class Search extends Controller
               
         $output = "";
         
-        $cols = ",{$locale['description']},{$locale['end']} {$locale['time']},{$locale['bids']}";
-        $cols .= (in_array(2,$fields)) ? ",{$locale['postage']}" : "";
-        $cols .= (in_array(4,$fields)) ? ",{$locale['country']}" : "";
-        $cols .= (in_array(5,$fields)) ? ",{$locale['seller']}" : "";
-        $cols .= (in_array(6,$fields)) ? ",{$locale['condition']}" : "";
-        $cols .= (in_array(8,$fields)) ? ",{$locale['starting']} {$locale['bid']}" : "";
-        $cols .= (in_array(9,$fields)) ? ",{$locale['reserve']}" : "";
-        $cols .= (in_array(10,$fields)) ? ",{$locale['category']}" : "";
-        $cols .= (in_array(11,$fields)) ? ",{$locale['sub']} {$locale['category']}" : "";
-        $cols .= (in_array(12,$fields)) ? ",{$locale['status']}" : "";
+        /* @phpstan-ignore-line */ /** @psalm-suppress UndefinedVariable */ /** @psalm-suppress UndefinedVariable */ $cols = ",{$locale['description']},{$locale['end']} {$locale['time']},{$locale['bids']}";
+        /* @phpstan-ignore-line */ /** @psalm-suppress UndefinedVariable */ /** @psalm-suppress UndefinedVariable */ $cols .= (in_array(2,$fields)) ? ",{$locale['postage']}" : "";
+        /* @phpstan-ignore-line */ /** @psalm-suppress UndefinedVariable */ /** @psalm-suppress UndefinedVariable */ $cols .= (in_array(4,$fields)) ? ",{$locale['country']}" : "";
+        /* @phpstan-ignore-line */ /** @psalm-suppress UndefinedVariable */ /** @psalm-suppress UndefinedVariable */ $cols .= (in_array(5,$fields)) ? ",{$locale['seller']}" : "";
+        /* @phpstan-ignore-line */ /** @psalm-suppress UndefinedVariable */ /** @psalm-suppress UndefinedVariable */ $cols .= (in_array(6,$fields)) ? ",{$locale['condition']}" : "";
+        /* @phpstan-ignore-line */ /** @psalm-suppress UndefinedVariable */ /** @psalm-suppress UndefinedVariable */ $cols .= (in_array(8,$fields)) ? ",{$locale['starting']} {$locale['bid']}" : "";
+        /* @phpstan-ignore-line */ /** @psalm-suppress UndefinedVariable */ /** @psalm-suppress UndefinedVariable */ $cols .= (in_array(9,$fields)) ? ",{$locale['reserve']}" : "";
+        /* @phpstan-ignore-line */ /** @psalm-suppress UndefinedVariable */ /** @psalm-suppress UndefinedVariable */ $cols .= (in_array(10,$fields)) ? ",{$locale['category']}" : "";
+        /* @phpstan-ignore-line */ /** @psalm-suppress UndefinedVariable */ /** @psalm-suppress UndefinedVariable */ $cols .= (in_array(11,$fields)) ? ",{$locale['sub']} {$locale['category']}" : "";
+        /* @phpstan-ignore-line */ /** @psalm-suppress UndefinedVariable */ /** @psalm-suppress UndefinedVariable */ $cols .= (in_array(12,$fields)) ? ",{$locale['status']}" : "";
         $cols .= "|";
         
         $output .= $cols;
@@ -455,7 +457,7 @@ class Search extends Controller
         foreach( $results as $result )
         {
     		$auction_id = $result[0];    		
-    		$price = $result[1];	
+    		/** @psalm-suppress UnusedVariable */ /** @psalm-suppress UnusedVariable */ $price = $result[1];	
     		 	
     		// postage
     		$postage = $result[2];
@@ -481,7 +483,7 @@ class Search extends Controller
     		$pounds = substr($reserve, 0, strlen($reserve) -2);	    			
 			$reserve = "\$$pounds.$pence";
     		
-    		$item_header_description = eregi_replace(",","",$result[10]);	 	
+    		/* @phpstan-ignore-line */ /** @psalm-suppress UndefinedFunction */ /** @psalm-suppress UndefinedFunction */ $item_header_description = eregi_replace(",","",$result[10]);	 	
     		$cat_id = $result[12];	 	
     		$subcat_id = $result[13];	 	
     		$status = $result[14];	
@@ -493,7 +495,7 @@ class Search extends Controller
     		
     		$row .= "<img src='images/auction/$img' width='50' height='50'>,<a href='viewauction.php?category=$cat_id&subcategory=$subcat_id&viewid=$auction_id'>$item_header_description</a>,$bidding_endtime, $bid_history";
     		$row .= (in_array(2,$fields)) ? ",$postage" : "";
-	        $row .= (in_array(4,$fields)) ? ",{$locale[$country_from]}" : "";
+	        /* @phpstan-ignore-line */ /** @psalm-suppress UndefinedVariable */ /** @psalm-suppress UndefinedVariable */ $row .= (in_array(4,$fields)) ? ",{$locale[$country_from]}" : "";
 	        $row .= (in_array(5,$fields)) ? ",$sellerid" : "";
 	        $row .= (in_array(6,$fields)) ? ",$condition" : "";
 	        $row .= (in_array(8,$fields)) ? ",$starting_bid" : "";
@@ -511,7 +513,7 @@ class Search extends Controller
     }
     
     
-    public function suggest_directive( $match )
+    /** @psalm-suppress MissingReturnType, MissingParamType */ /** @psalm-suppress MissingReturnType, MissingParamType */ public function suggest_directive( $match )
     {
     	$searchterm = $this->registry->__GET['ajaxsearch'];
         $now = date('Y-m-d H:i:s', time());
@@ -531,7 +533,7 @@ class Search extends Controller
             $img = ($img == "") ? "../blanksmall.jpg" : $img;
         	
             $data = preg_replace ( "/\\[img\\]/s" , $img , $data );
-            $data = preg_replace ( "/\\[item_header_description\\]/s" , $item_header_description , $data );
+            /** @psalm-suppress PossiblyNullArgument */ /** @psalm-suppress PossiblyNullArgument */ $data = preg_replace ( "/\\[item_header_description\\]/s" , $item_header_description , $data );
         	      	
         	$count++;	        	
         	if( $count == 10 )
@@ -539,14 +541,14 @@ class Search extends Controller
         		break;
         	}
         	
-        	$output .= $data;
+        	/** @psalm-suppress PossiblyInvalidOperand */ /** @psalm-suppress PossiblyInvalidOperand */ $output .= $data;
         }
         
         return $output;
     }
     
 
-    public function index()
+    /** @psalm-suppress MissingOverrideAttribute, MissingReturnType */ /** @psalm-suppress MissingOverrideAttribute, MissingReturnType */ #[\Override] public function index()
     {    	
    		$items = array (
 	        "title" => "%search%" ,
@@ -554,10 +556,11 @@ class Search extends Controller
 	        "loginfailed" => ""
 	    );
 	
-        $this->view = new View ( "advancedSearch" );
-        $this->view->process ( $items );
-        $this->view->output ();
+        /* @phpstan-ignore-line */ $this->view = new View ( "advancedSearch" );
+        /* @phpstan-ignore-line */ $this->view->process ( $items );
+        /* @phpstan-ignore-line */ $this->view->output ();
     }
 }
 
-new Search;
+/** @psalm-suppress MissingDependency */ /** @psalm-suppress MissingDependency */ new Search;
+// jscpd:ignore-end

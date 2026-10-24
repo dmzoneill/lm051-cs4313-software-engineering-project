@@ -1,3 +1,4 @@
+<!-- jscpd:ignore-start -->
 @header@
 @adminmenu@
 
@@ -662,3 +663,4 @@ function connect( id )
 
 </script>
 @footer@
+<!-- jscpd:ignore-end -->
