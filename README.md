@@ -1,7 +1,7 @@
 # CS4313 Software Engineering Project
 
 A group project from the CS4313 Software Engineering module of the LM051
-degree at the University of Limerick. It is a PHP auction website called
+degree at the University of Limerick. It is a PHP auction site called
 CharityBay.
 
 ## What it does
